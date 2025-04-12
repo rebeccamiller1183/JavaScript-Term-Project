@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tank Decoration</title>
+  <style>
+    body {
+      background-color: aquamarine;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin: 10px 0;
+      color: darkcyan;
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .tank {
+      width: 800px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .draggables {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust the min width of items */
+      gap: 20px; /* Set the gap between grid items */
+      margin-top: 20px;
+      max-width: 800px;
+      width: 100%;
+      justify-items: center;
+    }
+
+    .draggables img {
+      /* Preserve the image's natural size */
+      width: auto;
+      height: auto;
+      max-width: none;
+      max-height: none;
+      cursor: grab;
+    }
+
+    .draggables p {
+      margin: 0;
+    }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script>
+    $(function () {
+      $("[id^=MoveMe]").draggable();
+    });
+  </script>
+</head>
+
+<body>
+  <h1>Fish tank decorating</h1>
+  <h2>Arrange your fish tank by dragging the decorations!</h2>
+
+  <section class="main-container">
+    <img class="tank" src="media/water.jpg" alt="water image" />
+
+    <div class="draggables">
+      <p id="MoveMe1"><img src="media/blueFish.png" alt="blue fish image" /></p>
+      <p id="MoveMe2"><img src="media/coral.png" alt="coral image" /></p>
+      <p id="MoveMe3"><img src="media/orangeFish.png" alt="orange fish image" /></p>
+      <p id="MoveMe4"><img src="media/plant.png" alt="plant image" /></p>
+      <p id="MoveMe5"><img src="media/seahorse.png" alt="seahorse image" /></p>
+      <p id="MoveMe6"><img src="media/shark.png" alt="shark image" /></p>
+      <p id="MoveMe7"><img src="media/snail.png" alt="snail image" /></p>
+      <p id="MoveMe8"><img src="media/stripedFish.png" alt="striped fish image" /></p>
+    </div>
+  </section>
+  <footer>
+    <p>
+        <a href="decorReadme.txt">Game information</a>
+    </p>
+  </footer>
+</body>
+</html>
