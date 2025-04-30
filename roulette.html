@@ -1,6 +1,103 @@
 <!DOCTYPE html>
 <html>
-<title>Clam roulette</title>
-<h1>Clam roulette</h1>
-<p>User chooses between three clams, one of them causes a loss, the other two contain pearls. Scoreboard will include number of losses, current win streak, and longest win streak.</p>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Clam Roulette</title>
+    <link href="css/clamRoulette.css" rel="stylesheet" type="text/css">
+    <link href="css/allGames.css" rel="stylesheet" type="text/css">
+    <script>
+        var wins = 0;
+        var losses = 0;
+        var emptyClam = 0;
+
+        // set each clam to empty image
+        // enable selection buttons
+        // select random clam as loser
+        // disable next button until user makes a selection
+
+        function startGame() {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`img${i}`).src = "media/closedclam.png";
+                document.getElementById(`button${i}`).disabled = false;
+            }
+            emptyClam = Math.floor(Math.random() * 3) + 1;
+            updateScore();
+            document.getElementById("next").disabled=true;
+        }
+
+        // display number of wins & losses
+        function updateScore() {
+            document.getElementById("scoreInfo").innerText = `Wins: ${wins}    Losses: ${losses}`;
+        }
+
+        //traverse clam images, display open clams, losing clam without pearl
+        //disable numbered buttons until next turn
+        //update scores based on user input
+        //enable next button
+        function chooseClam(clam) {
+            for (let i = 1; i <= 3; i++) {
+                const img = document.getElementById(`img${i}`);
+                if (i === emptyClam) {
+                    img.src = "media/emptyclam.png";
+                } else {
+                    img.src = "media/pearlclam.png";
+                }
+                document.getElementById(`button${i}`).disabled = true;
+            }
+
+            if (clam === emptyClam) {
+                losses++;
+            } else {
+                wins++;
+            }
+            updateScore();
+            document.getElementById("next").disabled=false;
+        }
+
+        //when page is loaded, call start game
+        //when buttons are clicked, call chooseClam & pass respective number
+        //when next button is clicked, call startGame to begin next round
+        window.onload = function () {
+            startGame();
+            document.getElementById("button1").onclick = () => chooseClam(1);
+            document.getElementById("button2").onclick = () => chooseClam(2);
+            document.getElementById("button3").onclick = () => chooseClam(3);
+            document.getElementById("next").onclick = startGame;
+        }
+    </script>
+</head>
+<body>
+<!--   title, instructions, player score   -->
+    <div class="centered-container">
+    <h1>Clam Roulette</h1>
+    <h2>Choose a clam with a pearl in it!</h2>
+    <div id="scoreInfo"></div>
+    </div>
+
+<!-- clam images -->
+    <div class="game-container">
+        <div class="clam-row">
+            <img id="img1" class="clam-img">
+            <img id="img2" class="clam-img">
+            <img id="img3" class="clam-img">
+        </div>
+<!-- numbered buttons -->
+        <div class="button-row">
+            <button id="button1" class="clam-button">1</button>
+            <button id="button2" class="clam-button">2</button>
+            <button id="button3" class="clam-button">3</button>
+        </div>
+    </div>
+<!-- next button -->
+    <div class="arrow-container">
+        <button id="next" class="arrow-button" disabled>
+            <img src="media/arrow.png" alt="Next">
+        </button>
+    </div>
+    <footer>
+        <!-- links -->
+        <p><a href="readme.txt">Site Information</a><a href="underwaterFun.html">Main Page</a></p>
+    </footer>
+</body>
+
 </html>
