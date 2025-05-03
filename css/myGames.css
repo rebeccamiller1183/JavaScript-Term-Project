@@ -2,74 +2,19 @@ body{
     background: url("../media/coralReef.jpg");
     background-size:100%;
     background-repeat:no-repeat;
-    font-family:fantasy;
-    font-size:14pt;
-    text-align:center;
-    color:darkslategrey;
 }
+
 @media (max-width: 768px) {
     body {
         background: url("../media/reef.jpg");
     }
 }
-/* li{
-    background-color:darkslategray;
-    color:cadetblue;
-    padding:25px;
-    text-align:center;
-    font-family:fantasy;
-    border:1px solid cornflowerblue;
-    border-radius:8px;
-    font-size:105%;
-    width:60%;
-} */
-ul{
-    list-style-type:none;
-}
-a{
-    background-color:darkslategray;
-    padding:1em;
-    text-align:center;
-    border:1px cornflowerblue;
-    border-radius:8px;
-    font-size:100%;
-    padding-left:10em;
-    padding-right:10em;
-}
-a:link{
-    color: cadetblue;
-    text-decoration:none;
-}
-a:visited{
-    color:slateblue;
-    text-decoration:underline;
-}
-a:hover{
-    color:darkslategray;
-    text-decoration:underline;
-    background-color:cadetblue;
-}
-a:active{
-    color:lightslategray;
-    text-decoration:underline;
-}
+
 h1{
     background-color:cadetblue;
     border-radius:10px;
 }
-footer{
-    margin-top:5%;
-    position:fixed;
-    left:0;
-    bottom:0;
-    width:100%;
-    border-radius:0px;
-    background-color:lightslategray;
-    font-size:small;
-}
-footer a{
-    background-color:transparent;
-}
-footer a:link{
-    color:darkslategray;
+
+ul{
+    list-style-type:none;
 }
