@@ -1,0 +1,48 @@
+body{
+    font-family:fantasy;
+    font-size:14pt;
+    text-align:center;
+    color:darkslategrey;
+}
+
+a{
+    background-color:lightslategray;
+    padding:1em;
+    border:1px cornflowerblue;
+    border-radius:8px;
+}
+
+a:link{
+    color:cadetblue;
+    text-decoration:none;
+}
+
+a:visited{
+    color:slateblue;
+    text-decoration:underline;
+}
+
+a:hover{
+    color:darkslategray;
+    text-decoration:underline;
+    background-color: cadetblue;
+}
+
+a:active{
+    color:lightslategray;
+    text-decoration:underline;
+}
+
+footer{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:100%;
+    background-color:lightslategray;
+}
+footer a{
+    background-color:transparent;
+}
+footer a:link{
+    color:darkslategray;
+}

@@ -1,0 +1,44 @@
+body {
+    background-color: aquamarine;
+  }
+
+  h1, h2 {
+    text-align: center;
+    margin: 10px 0;
+    color: darkcyan;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .tank {
+    width: 800px;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .draggables {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+    gap: 20px; 
+    margin-top: 20px;
+    max-width: 800px;
+    width: 100%;
+    justify-items: center;
+  }
+
+  .draggables img {
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    cursor: grab;
+  }
+
+  .draggables p {
+    margin: 0;
+  }
