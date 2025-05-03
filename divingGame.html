@@ -1,6 +1,195 @@
 <!DOCTYPE html>
 <html>
-<title>Diving game</title>
-<h1>Clam roulette</h1>
-<p><a href="divingReadme.txt">Game Information</a></p>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diving Game</title>
+<link href="css/divingGame.css" rel="stylesheet" type="text/css">
+<link href="css/allGames.css" rel="stylesheet" type="text/css">
+<script>
+
+    var myGamePiece;
+    var myObstacles = [];
+    var myScore;
+    
+    //create gamepiece(diverimage), set up score text and game area
+    function startGame() {
+        const diverImage=new Image();
+        diverImage.src="media/diver.png";
+    
+        diverImage.onload=function(){
+            myGamePiece=new component(40, 40, diverImage, 10, 120, "image");
+            myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+            myGameArea.start();
+        };
+    }
+    
+    //create canvas
+    //Every 20 milliseconds, call updateGameArea
+    //set up clear and stop
+    var myGameArea = {
+        canvas : document.createElement("canvas"),
+        start : function() {
+            this.canvas.width = 500;
+            this.canvas.height = 300;
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.frameNo = 0;
+            this.interval = setInterval(updateGameArea, 20);
+            },
+        clear : function() {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        },
+        stop : function() {
+            clearInterval(this.interval);
+        }
+    }
+    
+    //component constructor
+    //write words, draw components, update position, check if an obstacle is hit
+    function component(width, height, color, x, y, type) {
+        this.type = type;
+        this.image=(type==="image")?color: null;
+        this.width = width;
+        this.height = height;
+        this.speedX = 0;
+        this.speedY = 0;    
+        this.x = x;
+        this.y = y;    
+        this.update = function() {
+            ctx = myGameArea.context;
+            if (this.type == "text") {
+                ctx.font = this.width + " " + this.height;
+                ctx.fillStyle = color;
+                ctx.fillText(this.text, this.x, this.y);
+            } 
+            else if (this.type == "obst") {
+                const grad = ctx.createLinearGradient(this.x, this.y, this.x + this.width, this.y);
+                grad.addColorStop(0, "darkgreen");
+                grad.addColorStop(0.5, "lightgreen");
+                grad.addColorStop(1, "darkgreen");
+                ctx.fillStyle = grad;
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x +10, this.y);
+                ctx.lineTo(this.x + this.width -10, this.y);
+                ctx.quadraticCurveTo(this.x + this.width, this.y, this.x + this.width, this.y +10);
+                ctx.lineTo(this.x + this.width, this.y + this.height -10);
+                ctx.quadraticCurveTo(this.x + this.width, this.y + this.height, this.x + this.width -10, this.y + this.height);
+                ctx.lineTo(this.x +10, this.y + this.height);
+                ctx.quadraticCurveTo(this.x, this.y + this.height, this.x, this.y + this.height -10);
+                ctx.lineTo(this.x, this.y +10);
+                ctx.quadraticCurveTo(this.x, this.y, this.x +10, this.y);
+                ctx.closePath();
+                ctx.fill();
+            }
+            else if (this.type === "image") {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+            else {
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+        this.newPos = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;        
+        }
+        this.crashWith = function(otherobj) {
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var otherleft = otherobj.x;
+            var otherright = otherobj.x + (otherobj.width);
+            var othertop = otherobj.y;
+            var otherbottom = otherobj.y + (otherobj.height);
+            var crash = true;
+            if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+            }
+            return crash;
+        }
+    }
+    
+    //checks for crashes, clears screen, update frame number & add obstacles
+    //updates score and component positions within canvas
+    //score is the number of frames the user has gone without crashing
+    function updateGameArea() {
+        var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+        for (i = 0; i < myObstacles.length; i += 1) {
+            if (myGamePiece.crashWith(myObstacles[i])) {
+                myGameArea.stop();
+                return;
+            } 
+        }
+        myGameArea.clear();
+        myGameArea.frameNo += 1;
+        if (myGameArea.frameNo == 1 || everyinterval(150)) {
+            x = myGameArea.canvas.width;
+            minHeight = 20;
+            maxHeight = 200;
+            height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+            minGap = 40;
+            maxGap = 180;
+            gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+            myObstacles.push(new component(20, height, "black", x, 0, "obst"));
+            myObstacles.push(new component(20, x - height - gap, "black", x, (height + gap), "obst"));
+        }
+        for (i = 0; i < myObstacles.length; i += 1) {
+            myObstacles[i].speedX = -1;
+            myObstacles[i].newPos();
+            myObstacles[i].update();
+        }
+        myScore.text="SCORE: " + myGameArea.frameNo;
+        myScore.update();
+        myGamePiece.newPos();    
+        myGamePiece.update();
+    }
+    
+    function everyinterval(n) {
+        if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+        return false;
+    }
+    
+    //set gamepiece speeds when called by pressing buttons
+    function moveup() {
+        myGamePiece.speedY = -1; 
+    }
+    
+    function movedown() {
+        myGamePiece.speedY = 1; 
+    }
+    
+    function moveleft() {
+        myGamePiece.speedX = -1; 
+    }
+    
+    function moveright() {
+        myGamePiece.speedX = 1; 
+    }
+    
+    function clearmove() {
+        myGamePiece.speedX = 0; 
+        myGamePiece.speedY = 0; 
+    }
+    </script>
+</head>
+<body onload="startGame()">
+
+<h1>Help the diver avoid obstacles!</h1>
+<h2>Use the buttons to move the diver</h2>
+<div style="text-align:center;width:480px;">
+  <!-- buttons to move gamepiece -->
+  <button onmousedown="moveup()" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
+  <button onmousedown="moveleft()" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
+  <button onmousedown="moveright()" onmouseup="clearmove()" ontouchstart="moveright()">RIGHT</button><br><br>
+  <button onmousedown="movedown()" onmouseup="clearmove()" ontouchstart="movedown()">DOWN</button>
+</div>
+<br>
+<br>
+<br>
+<footer>
+    <p><a href="readme.txt">Site Information</a><a href="underwaterFun.html">Main Page</a></p>
+</footer>
+</body>
 </html>
